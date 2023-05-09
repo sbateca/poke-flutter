@@ -1,25 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_app/view_model/counter_view_model.dart';
 
-class CounterScreen extends StatefulWidget {
-  const CounterScreen({super.key});
+class CounterView extends StatefulWidget {
+  const CounterView({super.key});
 
   @override
-  State<CounterScreen> createState() => _CounterScreenState();
+  State<CounterView> createState() => _CounterViewState();
 }
 
-class _CounterScreenState extends State<CounterScreen> {
-  int counter = 0;
+class _CounterViewState extends State<CounterView> {
+  CounterViewModel counterViewModel = CounterViewModel();
 
   @override
   Widget build(BuildContext context) {
+    int counter = counterViewModel.counter;
+
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Counter Screen'),
+          title: const Text('Counter View'),
           actions: [
             IconButton(
               icon: const Icon(Icons.refresh_rounded),
               onPressed: () {
-                counter = 0;
+                counterViewModel.reset();
                 setState(() {});
               },
             ),
@@ -47,22 +50,21 @@ class _CounterScreenState extends State<CounterScreen> {
             CustomFloatingActionButton(
                 icon: Icons.refresh_rounded,
                 onPressed: () {
-                  counter = 0;
+                  counterViewModel.reset();
                   setState(() {});
                 }),
             const SizedBox(height: 15),
             CustomFloatingActionButton(
                 icon: Icons.plus_one,
                 onPressed: () {
-                  counter += 1;
+                  counterViewModel.increment();
                   setState(() {});
                 }),
             const SizedBox(height: 15),
             CustomFloatingActionButton(
                 icon: Icons.exposure_minus_1_outlined,
                 onPressed: () {
-                  if (counter == 0) return;
-                  counter -= 1;
+                  counterViewModel.decrement();
                   setState(() {});
                 })
           ],
