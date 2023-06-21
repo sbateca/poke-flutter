@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_app/provider/pokemon_provider.dart';
-import 'package:pokemon_app/views/pokemon_list_view.dart';
+import 'package:pokemon_app/views/views.dart';
 import 'package:provider/provider.dart';
 // import 'package:pokemon_app/views/counter_view.dart';
 
@@ -36,7 +36,12 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
         colorSchemeSeed: Colors.deepPurple,
       ),
-      home: const PokemonListView(),
+      initialRoute: "/splashScreen",
+      routes: {
+        "/splashScreen": (context) => const SplashScreen(),
+        "/home": (context) => const PokemonListView(),
+        "/details": (context) => const PokemonDetails(),
+      },
     );
   }
 }

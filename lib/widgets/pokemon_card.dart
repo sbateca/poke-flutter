@@ -9,12 +9,13 @@ class PokemonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
+    return InkWell(
       child: Card(
+        margin: const EdgeInsets.all(8),
         child: ListTile(
           leading: Image.network(
             pokemon.sprites.frontDefault,
+            scale: 1.5,
           ),
           title: Text(
             capitalize(pokemon.name),
@@ -26,6 +27,9 @@ class PokemonCard extends StatelessWidget {
           ),
         ),
       ),
+      onTap: () {
+        Navigator.pushNamed(context, "/details", arguments: pokemon);
+      },
     );
   }
 }
