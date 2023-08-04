@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -86,35 +87,46 @@ class _PokemonHeader extends StatelessWidget {
         child: Stack(
           children: [
             Center(
-              child: Image(
-                image: NetworkImage(pokemon.sprites.frontDefault),
-                fit: BoxFit.fill,
-                height: 160,
-                width: 180,
-              )
-            ),
+                child: Image(
+              image: NetworkImage(pokemon.sprites.frontDefault),
+              fit: BoxFit.fill,
+              height: 160,
+              width: 180,
+            )),
             Positioned(
-              top: 0,
-              right: 0,
-              child: IconButton(
-                icon: const Icon(Icons.camera_alt_rounded), 
-                color: Colors.white,
-                iconSize: 50,
-                onPressed: () async {
-                  final picker =  ImagePicker();
-                  final XFile? pickedFile = await picker.pickImage(
-                    source: ImageSource.camera,
-                  );
-                  if (pickedFile == null) return;
+                top: 0,
+                right: 0,
+                child: IconButton(
+                  icon: const Icon(Icons.camera_alt_rounded),
+                  color: Colors.white,
+                  iconSize: 50,
+                  onPressed: () async {
+                    final picker = ImagePicker();
+                    final XFile? pickedFile = await picker.pickImage(
+                      source: ImageSource.camera,
+                    );
+                    if (pickedFile == null) return;
 
-                  Directory capturesDirectory = await FileSystemUtils.createLocalDirectory('pokemon_${pokemon.id}');
-                  
-                  String fileName = basename(pickedFile.path);
-                  String destinationFile = '${capturesDirectory.path}/$fileName';
-                  await pickedFile.saveTo(destinationFile);
-                },
-              )
-            )
+                    Directory capturesDirectory =
+                        await FileSystemUtils.createLocalDirectory(
+                            'pokemon_${pokemon.id}');
+
+                    String fileName = basename(pickedFile.path);
+
+                    String destinationFile =
+                        '${capturesDirectory.path}$fileName';
+
+                    File sourceFile = File(pickedFile.path);
+                    File destination = File(destinationFile);
+
+                    await destination
+                        .writeAsBytes(await sourceFile.readAsBytes());
+
+                    print("Saved Image Path: $destinationFile");
+                    print(
+                        "Saved Image Size: ${await File(destinationFile).length()} bytes");
+                  },
+                ))
           ],
         ));
   }
