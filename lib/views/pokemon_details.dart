@@ -1,19 +1,22 @@
 import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:pokemon_app/model/pokemon_model.dart';
 import 'package:pokemon_app/utils/file_system_utils.dart';
 import 'package:pokemon_app/utils/utils.dart';
+import 'package:pokemon_app/widgets/pokemon_images_slider.dart';
 
 class PokemonDetails extends StatelessWidget {
   const PokemonDetails({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final pokemon = ModalRoute.of(context)!.settings.arguments as Pokemon;
+    final arguments =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    final pokemon = arguments['pokemon'];
+    final captures = arguments['captures'];
 
     return Scaffold(
         appBar: AppBar(
@@ -22,7 +25,7 @@ class PokemonDetails extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              _PokemonHeader(pokemon: pokemon),
+              _PokemonHeader(pokemon: pokemon, captures: captures),
               Text(
                 capitalize(pokemon.name),
                 style: const TextStyle(
@@ -72,11 +75,13 @@ class PokemonDetails extends StatelessWidget {
 }
 
 class _PokemonHeader extends StatelessWidget {
+  final Pokemon pokemon;
+  final List<String> captures;
+
   const _PokemonHeader({
     required this.pokemon,
+    required this.captures,
   });
-
-  final Pokemon pokemon;
 
   @override
   Widget build(BuildContext context) {
@@ -87,12 +92,14 @@ class _PokemonHeader extends StatelessWidget {
         child: Stack(
           children: [
             Center(
-                child: Image(
-              image: NetworkImage(pokemon.sprites.frontDefault),
-              fit: BoxFit.fill,
-              height: 160,
-              width: 180,
-            )),
+                child: captures.isEmpty
+                    ? Image(
+                        image: NetworkImage(pokemon.sprites.frontDefault),
+                        fit: BoxFit.fill,
+                        height: 160,
+                        width: 180,
+                      )
+                    : PokemonImagesSlider(imagesPath: captures!)),
             Positioned(
                 top: 0,
                 right: 0,

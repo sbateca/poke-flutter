@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:path_provider/path_provider.dart';
 
@@ -21,13 +22,24 @@ class FileSystemUtils {
   static Future<List<String>> listExternalDirectory() async {
     final Directory? appDocDir = await getExternalStorageDirectory();
     return appDocDir == null
-      ? []
-      : appDocDir.listSync().map((event) => event.path).toList();
+        ? []
+        : appDocDir.listSync().map((event) => event.path).toList();
   }
 
   static Future<List<String>> listExternalFolder(String folderName) async {
     final Directory? appDocDir = await getExternalStorageDirectory();
-    final Directory folderDirectory = Directory('${appDocDir?.path}/$folderName/');
+    final Directory folderDirectory =
+        Directory('${appDocDir?.path}/$folderName/');
     return folderDirectory.listSync().map((event) => event.path).toList();
+  }
+
+  static Future<File> loadImageFromStorage(String imagePath) async {
+    File imageFile = File(imagePath);
+
+    if (imageFile.existsSync()) {
+      return imageFile;
+    } else {
+      return File('assets/default.jpeg');
+    }
   }
 }
