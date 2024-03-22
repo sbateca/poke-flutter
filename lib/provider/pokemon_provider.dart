@@ -27,11 +27,12 @@ class PokemonProvider extends ChangeNotifier {
 
   final List<Pokemon> _pokemons = [];
 
-  void addPokemon(id) async {
-    final pokemon = await PokemonServices.getPokemon(id);
-
-    _pokemons.add(pokemon);
-
+  void addPokemon(id, elements) async {
+    for (int i = 1; i <= elements; i++) {
+      final pokemon = await PokemonServices.getPokemon(id);
+      _pokemons.add(pokemon);
+      id++;
+    }
     notifyListeners();
   }
 

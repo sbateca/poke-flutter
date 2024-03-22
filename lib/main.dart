@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/splashScreen",
       routes: {
         "/splashScreen": (context) => const SplashScreen(),
-        "/home": (context) => const PokemonListView(),
+        "/home": (context) => const PokemonGridView(),
         "/details": (context) => const PokemonDetails(),
       },
     );

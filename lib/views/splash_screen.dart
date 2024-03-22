@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pokemon_app/views/views.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -15,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const PokemonListView()),
+        MaterialPageRoute(builder: (context) => const PokemonGridView()),
       );
     });
   }
@@ -26,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Image.asset('assets/pokemon_logo.png'),
+          Image.asset('assets/splash_screen/splash.png'),
           const Text(
             'Loading',
             style: TextStyle(
@@ -36,9 +37,22 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Container(
             margin: const EdgeInsets.only(top: 20),
-            child: const CircularProgressIndicator(
-              color: Colors.black,
-            ),
+            child: SleekCircularSlider(
+              appearance: CircularSliderAppearance(
+                spinnerMode: true,
+                size: 50,
+                customWidths:CustomSliderWidths(
+                  progressBarWidth: 3,
+                ),
+                customColors: CustomSliderColors(
+                  progressBarColors: [
+                    const Color.fromARGB(255, 231, 231, 231),
+                    const Color.fromARGB(255, 184, 184, 184),
+                    const Color.fromARGB(255, 126, 126, 126)],
+                    trackColor: const Color.fromARGB(255, 236, 236, 236)
+                ),
+
+            )),
           )
         ],
       ),

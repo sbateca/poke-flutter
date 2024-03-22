@@ -47,7 +47,7 @@ class PokemonDetails extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              buildStatRow(pokemon.stats),
+              buildStatTileRow(pokemon.stats),
               const SizedBox(
                 height: 20,
               ),
@@ -65,7 +65,7 @@ class PokemonDetails extends StatelessWidget {
   }
 }
 
-class _PokemonHeader extends StatelessWidget {
+class _PokemonHeader extends StatefulWidget {
   const _PokemonHeader({
     required this.pokemon,
   });
@@ -73,18 +73,66 @@ class _PokemonHeader extends StatelessWidget {
   final Pokemon pokemon;
 
   @override
+  _PokemonHeaderState createState() => _PokemonHeaderState();
+}
+
+class _PokemonHeaderState extends State<_PokemonHeader> {
+  int _currentIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
-        color: Colors.green,
-        padding: const EdgeInsets.all(20),
-        alignment: Alignment.center,
-        child: Image(
-          image: NetworkImage(pokemon.sprites.frontDefault),
-          fit: BoxFit.fill,
-          height: 160,
-          width: 180,
-        ));
+    final pokemonImagesList = [
+      widget.pokemon.sprites.frontDefault,
+      widget.pokemon.sprites.backDefault
+    ];
+    return Stack(
+      children: [
+        Container(
+          height: 200,
+          color: Colors.green,
+          padding: const EdgeInsets.all(8),
+          alignment: Alignment.center,
+          child: Image(
+            image: NetworkImage(pokemonImagesList[_currentIndex]),
+            fit: BoxFit.contain,
+          ),
+        ),
+        Positioned(
+          left: 0,
+          top: 0,
+          bottom: 0,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () => getNewIndex(pokemonImagesList.length),
+          ),
+        ),
+        Positioned(
+          right: 0,
+          top: 0,
+          bottom: 0,
+          child: IconButton(
+            icon: const Icon(Icons.arrow_forward),
+            onPressed: () => getNewIndex(pokemonImagesList.length),
+          ),
+        ),
+      ],
+    );
   }
+
+  void getNewIndex(int pokemonListLength) {
+    int listSize = 0;
+    listSize = pokemonListLength;
+    if(_currentIndex < listSize - 1){
+      setState(() {
+        _currentIndex++;
+      });
+    }else{
+      setState(() {
+        _currentIndex = 0;
+      });
+    }
+  }
+
 }
 
 class PokemonDetailsBody extends StatelessWidget {
@@ -175,6 +223,39 @@ Widget buildStatRow(List<StatElement> stats) {
           ],
         ),
       );
+    }).toList(),
+  );
+}
+
+Widget buildStatTileRow(List<StatElement> stats) {
+  return Column(
+    children: stats.map((stat) {
+      return Card(
+        child: ListTile(
+          leading: Image(
+            width: 25,
+            height: 25,
+            image: AssetImage(getAssetImage('stats',
+                stat.stat.name.replaceFirst(RegExp(r'(\-)'), '_'))),
+          ),
+          title: Row(
+            children: [
+              Text(
+                capitalize(stat.stat.name),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        trailing: Text(
+          stat.baseStat.toString(),
+          style: const TextStyle(
+            fontSize: 20,
+          ),
+        ),
+      ));
     }).toList(),
   );
 }

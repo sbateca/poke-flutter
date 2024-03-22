@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pokemon_app/provider/pokemon_provider.dart';
 import 'package:pokemon_app/widgets/pokemon_card.dart';
 import 'package:provider/provider.dart';
+import 'package:pokemon_app/widgets/pokemon_action_button.dart';
 
 class PokemonListView extends StatefulWidget {
   const PokemonListView({super.key});
@@ -35,7 +36,7 @@ class _PokemonListViewState extends State<PokemonListView> {
       floatingActionButton: CustomFloatingActionButton(
           icon: Icons.add,
           onPressed: () {
-            pokemonProvider.addPokemon(pokemonIdCounter);
+            pokemonProvider.addPokemon(pokemonIdCounter, 1);
             pokemonProvider.pokemonIdCounter = pokemonIdCounter + 1;
             setState(() {});
           }),
@@ -43,23 +44,3 @@ class _PokemonListViewState extends State<PokemonListView> {
   }
 }
 
-class CustomFloatingActionButton extends StatelessWidget {
-  final IconData icon;
-  final VoidCallback? onPressed;
-
-  const CustomFloatingActionButton({
-    super.key,
-    required this.icon,
-    this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      enableFeedback: true,
-      elevation: 5,
-      onPressed: onPressed,
-      child: Icon(icon),
-    );
-  }
-}
