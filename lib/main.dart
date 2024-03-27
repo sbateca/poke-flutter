@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_app/model/pokemon_model.dart';
 import 'package:pokemon_app/provider/pokemon_provider.dart';
 import 'package:pokemon_app/views/views.dart';
 import 'package:provider/provider.dart';
@@ -40,7 +41,13 @@ class MyApp extends StatelessWidget {
       routes: {
         "/splashScreen": (context) => const SplashScreen(),
         "/home": (context) => const PokemonGridView(),
-        "/details": (context) => const PokemonDetails(),
+        "/detailsView": (context) => const PokemonDetailsView(),
+        "/category": (context) {
+          final Map<String, dynamic> arguments = ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+          final Pokemon pokemon = arguments["pokemon"] as Pokemon;
+          final String category = arguments["category"] as String;
+          return Category(pokemon: pokemon, category: category);
+        },
       },
     );
   }

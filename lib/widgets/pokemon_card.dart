@@ -74,7 +74,7 @@ class PokemonGridCard extends StatelessWidget {
         ),
       ),
       onTap: () {
-        Navigator.pushNamed(context, "/details", arguments: pokemon);
+        Navigator.pushNamed(context, "/detailsView", arguments: pokemon);
       },
     );
   }
